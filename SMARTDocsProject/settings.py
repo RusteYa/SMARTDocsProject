@@ -82,10 +82,10 @@ AUTH_USER_MODEL = 'main.User'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'smartdocsprojectdb',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '',
+        'NAME': 'dbk673fgllk6il',
+        'USER': 'zxhofuujxkxikp',
+        'PASSWORD': 'f8cc4682e233f4667c754853615cde12ff0afd449271c6a4618b0b5c0d7734f6',
+        'HOST': 'ec2-50-16-241-91.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }

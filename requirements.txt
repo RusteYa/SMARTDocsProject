@@ -8,3 +8,4 @@ docxtpl==0.4.13
 Jinja2==2.10
 psycopg2==2.7.5
 Pillow==5.2.0
+whitenoise==3.3.1

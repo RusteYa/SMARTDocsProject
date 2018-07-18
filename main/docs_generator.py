@@ -4,7 +4,7 @@ import pymorphy2
 from docxtpl import DocxTemplate
 from .models import *
 
-locale.setlocale(locale.LC_ALL, '.1251')
+locale.setlocale(locale.LC_ALL, '')
 morph = pymorphy2.MorphAnalyzer()
 
 FACULTY_MAX_LEN = 65

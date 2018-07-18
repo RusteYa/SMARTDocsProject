@@ -4,7 +4,6 @@ import pymorphy2
 from docxtpl import DocxTemplate
 from .models import *
 
-locale.setlocale(locale.LC_ALL, 'ru_ru.utf-8')
 morph = pymorphy2.MorphAnalyzer()
 
 FACULTY_MAX_LEN = 65
@@ -35,6 +34,21 @@ practice_types = {
     2: 'преддипломная'
 }
 
+months = {
+    1: 'январь',
+    2: 'февраль',
+    3: 'март',
+    4: 'апрель',
+    5: 'май',
+    6: 'июнь',
+    7: 'июль',
+    8: 'август',
+    9: 'сентябрь',
+    10: 'октябрь',
+    11: 'ноябрь',
+    12: 'декабрь'
+}
+
 
 class Field:
     def __init__(self, name, value, max_len):
@@ -52,10 +66,8 @@ def generate_practice_diary(fio, group, faculty_data, practice_type_num, practic
             and curator_fio.__len__() + curator_office.__len__() + 2 <= CURATOR_MAX_LEN \
             and practice_type_data.__len__() <= PRACTICE_TYPE_SECOND_MAX_LEN \
             and practice_place.__len__() <= PRACTICE_PLACE_MAX_LEN:
-        print(practice_start_date.strftime("%B"))
-        print(morph.parse(practice_start_date.strftime("%B"))[0])
-        practice_start_date_month_gent = morph.parse(practice_start_date.strftime("%B"))[0].inflect({'gent'}).word
-        practice_end_date_month_gent = morph.parse(practice_end_date.strftime("%B"))[0].inflect({'gent'}).word
+        practice_start_date_month_gent = morph.parse(months[practice_start_date.month])[0].inflect({'gent'}).word
+        practice_end_date_month_gent = morph.parse(months[practice_end_date.month])[0].inflect({'gent'}).word
         practice_type_data_gent = morph.parse(practice_type_data)[0].inflect({'gent'}).word
         executor = '{fio}, {group}'.format(fio=fio, group=group)
         curator = '{fio}, {office}'.format(fio=curator_fio, office=curator_office)
@@ -99,7 +111,7 @@ def generate_ind_task(fio, group, faculty_data, practice_start_date, practice_en
             and practice_place.__len__() <= PRACTICE_PLACE_MAX_LEN \
             and specialty.__len__() <= SPECIALTY_MAX_LEN \
             and curator_company_office.__len__() <= CURATOR_COMPANY_OFFICE_MAX_LEN:
-        practice_end_date_month_gent = morph.parse(practice_end_date.strftime("%B"))[0].inflect({'gent'}).word
+        practice_end_date_month_gent = morph.parse(months[practice_end_date.month])[0].inflect({'gent'}).word
         executor_full = '{fio}, {course} курс, {group}'.format(fio=fio, course=course, group=group)
         curator_full = '{fio}, {office}'.format(fio=curator_fio, office=curator_office) if (
                 curator_academic_tittle is None or curator_academic_tittle == "") else '{fio}, {office}, {academic_tittle}'.format(

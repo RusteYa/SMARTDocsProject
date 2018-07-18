@@ -86,6 +86,9 @@ def save_doc(document, tmp_path, owner, practice, template):
         elif earlier_document:
             raise IntegrityError
 
+
+    print(settings.MEDIA_URL, settings.MEDIA_ROOT)
+    print(tmp_path)
     document.save(tmp_path)
 
     reopen = open(tmp_path, "rb")

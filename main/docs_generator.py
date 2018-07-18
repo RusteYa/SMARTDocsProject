@@ -4,7 +4,9 @@ import pymorphy2
 from docxtpl import DocxTemplate
 from .models import *
 
-print(locale.locale.getlocale())
+print(locale.getlocale())
+print(" ")
+print(locale.locale_alias)
 
 locale.setlocale(locale.LC_ALL, ('RU','UTF8'))
 morph = pymorphy2.MorphAnalyzer()

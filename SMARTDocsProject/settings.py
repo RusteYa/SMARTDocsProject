@@ -25,7 +25,7 @@ SECRET_KEY = '2^zsga!hlgg9g%0$zm1^dizolos@%7hyg1=75*%+a%(7whbyke'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['smartdocsgenerator.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition

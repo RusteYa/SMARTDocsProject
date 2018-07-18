@@ -132,12 +132,23 @@ _PATH = BASE_DIR
 MEDIA_ROOT = os.path.join(_PATH, 'files', 'media')
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = os.path.join(_PATH, 'react_app', 'static')
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(_PATH, 'static'),
-)
+
+#STATIC_ROOT = os.path.join(_PATH, 'react_app', 'static')
+#STATIC_URL = '/static/'
+#STATICFILES_DIRS = (
+#    os.path.join(_PATH, 'static'),
+#)
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath (__ file__)) 
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join (PROJECT_ROOT, 'staticfiles')  
+
+STATICFILES_DIRS = ( 
+    os.path.join (PROJECT_ROOT, 'static'), 
 )

@@ -12,7 +12,7 @@ PRACTICE_TYPE = {
 
 
 def get_temporary_save_path(student, document_type):
-    return "tmp/{}_{}_{}.docx".format(document_type, student.first_name, student.last_name)
+    return "tmp/{}_{}.docx".format(document_type, student.pk)
 
 
 def get_practice(practice_id, student):
@@ -98,7 +98,7 @@ def save_doc(document, tmp_path, owner, practice, template):
     entry.template = template
     entry.student = owner
     entry.practice = practice
-    entry.upload.save("{}_{}_{}.docx".format(owner.first_name, owner.last_name, str(template)), django_file, save=True)
+    entry.upload.save("{}_{}.docx".format(owner.pk, str(template)), django_file, save=True)
 
     reopen.close()
     os.remove(tmp_path)

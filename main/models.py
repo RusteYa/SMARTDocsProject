@@ -32,12 +32,12 @@ def get_only_students_q_with_profile():
 
 
 def filled_docs_directory_path(instance, filename):
-    return "filled_documents/{0} {1}/{2}/{3}".format(instance.student.first_name, instance.student.last_name, now.year,
+    return "filled_documents/{0}/{1}/{2}".format(instance.student.pk, now.year,
                                                      filename)
 
 
 def avatars_directory(instance, filename):
-    return "avatars/{0} {1}/{2}".format(instance.first_name, instance.last_name, filename)
+    return "avatars/{0}/{1}".format(instance.student.pk, filename)
 
 
 INNER_PRACTICE = 0

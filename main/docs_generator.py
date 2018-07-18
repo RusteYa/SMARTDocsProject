@@ -52,8 +52,8 @@ def generate_practice_diary(fio, group, faculty_data, practice_type_num, practic
             and curator_fio.__len__() + curator_office.__len__() + 2 <= CURATOR_MAX_LEN \
             and practice_type_data.__len__() <= PRACTICE_TYPE_SECOND_MAX_LEN \
             and practice_place.__len__() <= PRACTICE_PLACE_MAX_LEN:
-		print(practice_start_date.strftime("%B"))
-		print(morph.parse(practice_start_date.strftime("%B"))[0])
+        print(practice_start_date.strftime("%B"))
+        print(morph.parse(practice_start_date.strftime("%B"))[0])
         practice_start_date_month_gent = morph.parse(practice_start_date.strftime("%B"))[0].inflect({'gent'}).word
         practice_end_date_month_gent = morph.parse(practice_end_date.strftime("%B"))[0].inflect({'gent'}).word
         practice_type_data_gent = morph.parse(practice_type_data)[0].inflect({'gent'}).word

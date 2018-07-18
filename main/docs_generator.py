@@ -6,7 +6,7 @@ from .models import *
 
 print(locale.locale_alias)
 
-locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+locale.setlocale(locale.LC_ALL, 'ru_RU.ISO8859-5')
 morph = pymorphy2.MorphAnalyzer()
 
 FACULTY_MAX_LEN = 65

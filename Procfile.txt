@@ -1,0 +1,1 @@
+web: gunicorn SMARTDocsProject.wsgi --log-file -

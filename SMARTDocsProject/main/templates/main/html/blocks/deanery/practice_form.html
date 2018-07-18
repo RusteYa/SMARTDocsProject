@@ -1,0 +1,70 @@
+{% load utils %}
+<div id="practice-form">
+	<div class="input-group mb-3">
+		<div class="input-group-prepend">
+			<span class="input-group-text">Выберите, если хотите изменить</span>
+		</div>
+		<select class="form-control" name="practice-id">
+			<option value="-1">
+				Нет
+			</option>
+			{% for practice in practices %}
+				<option value="{{ practice.id }}">{{ practice.type_of|practice_type_str }} {{ practice.name }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="input-group mb-3">
+		<div class="input-group-prepend">
+			<span class="input-group-text">Название практики</span>
+		</div>
+		<input class="form-control" type="text" name="practice-name">
+	</div>
+	<div class="input-group mb-3">
+		<div class="input-group-prepend">
+			<span class="input-group-text">Тип практики</span>
+		</div>
+		<select class="form-control" name="practice-type">
+			{% for practice_type_choice in practice_type_choices %}
+				<option value="{{ practice_type_choice }}">{{ practice_type_choice|practice_type_str }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="input-group mb-3">
+		<div class="input-group-prepend">
+			<span class="input-group-text">Куратор</span>
+		</div>
+		<select class="form-control" name="practice-curator">
+			{% for curator in curators %}
+				<option value="{{ curator.id }}">{{ curator }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="input-group mb-3">
+		<div class="input-group-prepend">
+			<span class="input-group-text">Сроки</span>
+		</div>
+		<input class="form-control" type="text" name="practice-date" readonly="true">
+	</div>
+	<div class="input-group mb-3">
+		<div class="input-group-prepend">
+			<span class="input-group-text">Адрес прохождения</span>
+		</div>
+		<input class="form-control" type="text" name="practice-address">
+	</div>
+	<div class="input-group mb-3">
+		<div class="input-group-prepend">
+			<span class="input-group-text">Институт/Факультет</span>
+		</div>
+		<input class="form-control" type="text" name="practice-institute">
+	</div>
+	<div class="input-group mb-3">
+		<div class="input-group-prepend">
+			<span class="input-group-text">Специализация</span>
+		</div>
+		<input class="form-control" type="text" name="practice-specialization">
+	</div>
+</div>
+<div class="text-center">
+	<button id="save-practice-btn" class="btn btn-outline-success" type="button">Сохранить</button>
+	<button id="delete-practice-btn" class="btn btn-outline-danger" type="button">Удалить</button>
+</div>

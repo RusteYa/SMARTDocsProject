@@ -1,0 +1,11 @@
+{% extends "main/html/index.html" %}
+{% block content %}
+
+	{% include "main/html/blocks/messages.html" %}
+	<div class="text-center mb-5">
+		<button id="accept-doc-btn" class="btn btn-outline-success btn-lg">Принять</button>
+		<button id="decline-doc-btn" class="btn btn-outline-danger btn-lg">Отклонить</button>
+	</div>
+	{% include "main/html/blocks/deanery/document_list.html" %}
+	
+{% endblock %}

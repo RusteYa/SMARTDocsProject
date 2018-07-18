@@ -1,0 +1,22 @@
+{% extends "main/html/index.html" %}
+{% block content %}
+
+	{% include "main/html/blocks/django_messages.html" %}
+	<form action="/app/user/login/" method="POST">
+		{% csrf_token %}
+		<div class="text-center w-50 login-form">
+			<div class="form-group">
+				<label for="username">Имя пользователя</label>
+				<input type="text" name="username" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="password">Пароль</label>
+				<input type="password" name="password" class="form-control">
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-outline-primary">Войти</button>
+			</div>
+		</div>
+	</form>
+
+{% endblock %}

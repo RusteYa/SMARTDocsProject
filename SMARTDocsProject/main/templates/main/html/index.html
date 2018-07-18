@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<html lang="ru"/>
+		<meta charset="UTF-8">
+		{% load static %}
+		
+		
+		<!-- CSS -->
+		
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<!-- Bootstrap core -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Material Design Bootstrap -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.4/css/mdb.min.css" rel="stylesheet">
+		<!-- Datepicker -->
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+		<!-- Custom style -->
+		<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+		
+		<!-- /CSS -->
+		
+		
+		<!-- JavaScript -->
+		
+		<!-- JQuery -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<!-- Bootstrap core -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<!-- Bootstrap tooltips -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+		<!-- MDB core -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.4/js/mdb.min.js"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/ru.js"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+		
+		<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
+		{% include "main/html/blocks/scripts.html" %}
+		
+		<!-- /JavaScript -->
+		
+		
+		<title>{{ page_title }}</title>
+	</head>
+	<body>
+		<div class="container">
+			{% include "main/html/blocks/navbar.html" %}
+			<div class="jumbotron">
+				{% include "main/html/blocks/page_title.html" %}
+				{% block content %}
+				{% endblock %}
+			</div>
+		</div>
+	</body>
+</html>

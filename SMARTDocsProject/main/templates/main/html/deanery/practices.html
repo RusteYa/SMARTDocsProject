@@ -1,0 +1,10 @@
+{% extends "main/html/index.html" %}
+{% block content %}
+
+	{% include "main/html/blocks/messages.html" %}
+	<div class="text-center mb-5">
+		<a href="/app/deanery/practice/create/" class="btn btn-outline-primary btn-lg">Добавить/Редактировать практику</a>
+	</div>
+	{% include "main/html/blocks/deanery/practice_list.html" %}
+	
+{% endblock %}

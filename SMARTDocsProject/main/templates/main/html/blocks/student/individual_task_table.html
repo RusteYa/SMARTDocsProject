@@ -1,0 +1,40 @@
+{% block diary_table %}
+	<div class="table-responsive-sm table-striped table-small">
+		<table id="work-description-container" class="table" multi-date="true">
+			<thead class="thead-dark">
+				<tr>
+					<th>Описание</th>
+					<th>Дата</th>
+					<th>Удалить</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><textarea class="form-control" name="work">Ознакомление со спецификой работы организации, ее структурой, работой отдела/подразделения, в котором проводится практика</textarea></td>
+					<td><input class="form-control" type="text" name="date"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><textarea class="form-control" name="work">Ознакомление с корпоративной политикой, нормативной базой, должностными инструкциями, технологией получения и выполнения задач, информационной политикой и особенностями рабочей коммуникации.</textarea></td>
+					<td><input class="form-control" type="text" name="date"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><textarea class="form-control" name="work">Приобретение первоначальных навыков работы на определенной позиции, выполнение базовых задач, поставленных руководителем практики.</textarea></td>
+					<td><input class="form-control" type="text" name="date"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><textarea class="form-control" name="work">Выполнение дополнительных задач, поставленных руководителем практики.</textarea></td>
+					<td><input class="form-control" type="text" name="date"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><textarea class="form-control" name="work">Осуществление систематизации и анализа работы в форме отчёта по практике.</textarea></td>
+					<td><input class="form-control" type="text" name="date"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% load utils %}
+<div class="table-responsive-sm table-striped table-small">
+	<table id="student-list" class="table">
+		<thead class="thead-dark">
+			<tr>
+				<th>Название практики</th>
+				<th>Тип практики</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for practice in practices %}
+				<tr>
+					<input type="text" name="practice-id" disabled="true" readonly="true" value="{{ practice.id }}" style="display: none">
+					<td name="practice-name">{{ practice.name }}</td>
+					<td name="practice-type">{{ practice.type_of|practice_type_str }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>

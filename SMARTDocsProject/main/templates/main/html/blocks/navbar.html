@@ -1,0 +1,31 @@
+{% block navbar %}
+	{% load utils %}
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="#">SMARTDocsProject</a>
+		
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="navbar-nav mr-auto">
+				{% if request.user.is_authenticated %}
+					{% if request.user|has_group:"Students" %}
+						{% include "main/html/blocks/student/navbar.html" %}
+					{% elif request.user|has_group:"Curators" %}
+						{% include "main/html/blocks/curator/navbar.html" %}
+					{% elif request.user|has_group:"Deanery_Workers"%}
+						{% include "main/html/blocks/deanery/navbar.html" %}
+					{% endif %}
+					<li class="nav-item">
+						<a class="nav-link" href="/app/user/logout">Выйти</a>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="/app/user/login">Войти</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+	</nav>
+{% endblock %}

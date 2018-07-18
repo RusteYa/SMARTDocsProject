@@ -1,0 +1,10 @@
+{% load utils %}
+{% if request.user.is_authenticated %}
+	{% if request.user|has_group:"Students" %}
+		{% include "main/html/blocks/student/scripts.html" %}
+	{% elif request.user|has_group:"Curators" %}
+		{% include "main/html/blocks/curator/scripts.html" %}
+	{% elif request.user|has_group:"Deanery_Workers"%}
+		{% include "main/html/blocks/deanery/scripts.html" %}
+	{% endif %}
+{% endif %}

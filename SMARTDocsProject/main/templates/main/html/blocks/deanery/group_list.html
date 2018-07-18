@@ -1,0 +1,10 @@
+{% for group in groups %}
+	<div class="row">
+		<div class="col">
+			{% group.course %}
+		</div>
+		<div class="col">
+			{% group.group_number %}
+		</div>
+	</div>
+{% endfor %}

@@ -1,0 +1,34 @@
+{% load utils %}
+{% for practice in practices %}
+	<div class="card">
+		<div class="card-header">
+			<h5 class="mb-0">
+				{{ practice.type_of|practice_type_str }}
+				"{{ practice.name }}"
+			</h5>
+		</div>
+		<div class="card-body mr-0">
+			<div>Статус: {{ practice.is_active|practice_status_str }}</div>
+			<div>Руководитель: {{ practice.curator }}</div>
+			<div>Институт/Факультет: {{ practice.institute }}</div>
+			<div>Адрес прохождения: {{ practice.address }}</div>
+			<div>Дата прохождения: с {{ practice.start_date }} по {{ practice.end_date }}</div>
+			<div>
+				Документы для заполнения:
+				<div><a href="/app/student/practice/{{ practice.id }}/diary/">Дневник практики</a></div>
+				<div><a href="/app/student/practice/{{ practice.id }}/ind_task/">Индивидуальное задание</a></div>
+				<div><a href="/app/student/practice/{{ practice.id }}/report_title/">Титульный лист</a></div>
+			</div>
+			<div>
+				Заполненные документы:
+				{% if practice.documents %}
+					{% for doc in practice.documents %}
+						<div>Статус: {{ doc.status|doc_status_str }} <a href="/media/{{ doc.upload }}">{{ doc.template.document_name|doc_type_str }} {{ doc }}</a></div>
+					{% endfor %}
+				{% else %}
+					Отсутствуют
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endfor %}

@@ -1,0 +1,21 @@
+{% extends "main/html/index.html" %}
+{% block content %}
+{% load utils %}
+
+	{% include "main/html/blocks/messages.html" %}
+	<div class="text-center mb-5">
+		<div class="input-group">
+			<div class="input-group-prepend">
+				<span class="input-group-text">Выберите практику</span>
+			</div>
+			<select id="practice-id">
+				{% for practice in practices %}
+					<option value="{{ practice.id }}">{{ practice.type_of|practice_type_str }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<button id="close-practice-button" type="button"></button>
+	</div>
+	{% include "main/html/blocks/deanery/student_list.html" %}
+	
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "main/html/index.html" %}
+{% block content %}
+
+	{% include "main/html/blocks/messages.html" %}
+	{% csrf_token %}
+	<div class="text-center mb-5">
+		<button id="save-doc-btn" class="btn btn-outline-success btn-lg">Сохранить</button>
+	</div>
+	{% if doc_type == "practice" %}
+		{% include "main/html/blocks/student/diary_table.html" %}
+	{% elif doc_type == "ind_task" %}
+		{% if outer_practice %}
+			{% include "main/html/blocks/student/curator_info.html" %}
+		{% endif %}
+		{% include "main/html/blocks/student/individual_task_table.html" %}
+	{% elif doc_type == "title" %}
+		{% include "main/html/blocks/student/report_title.html" %}
+		{% if outer_practice %}
+			{% include "main/html/blocks/student/curator_info.html" %}
+		{% endif %}
+	{% endif %}
+	{% if doc_type != "title" %}
+		<div class="text-center">
+			<button id="add-new-row-btn" type="button" class="btn btn-outline-primary btn-lg">
+				<i class="fa fa-plus"></i>
+			</button>
+		</div>
+	{% endif %}
+
+{% endblock %}

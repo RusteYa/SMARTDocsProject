@@ -102,7 +102,7 @@ class CuratorProfile(models.Model):
                                 on_delete=models.CASCADE, limit_choices_to=get_only_curators_q,
                                 related_name='curator_profile', unique=True)
     position = models.CharField(max_length=100, verbose_name="Должность")
-    academic_title = models.CharField(max_length=100, verbose_name="Ученое звание")
+    academic_title = models.CharField(max_length=100, verbose_name="Ученое звание", blank=True)
 
     def __str__(self):
         return "{} add. data".format(str(self.user))

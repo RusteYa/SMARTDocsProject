@@ -1,10 +1,35 @@
 {% extends "main/html/index.html" %}
 {% block content %}
+{% load utils %}
 
 	{% include "main/html/blocks/messages.html" %}
 	<div class="text-center mb-5">
 		<button id="accept-doc-btn" class="btn btn-outline-success btn-lg">Принять</button>
 		<button id="decline-doc-btn" class="btn btn-outline-danger btn-lg">Отклонить</button>
+	</div>
+	<div class="text-center mb-5">
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+				<span class="input-group-text">Тип документа</span>
+			</div>
+			<select id='deanery-documents-type' class="form-control">
+				<option value="-1">Все</option>
+				{% for document_type in document_types %}
+					<option value="{{ document_type }}">{{ document_type|doc_type_str }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="input-group">
+			<div class="input-group-prepend">
+				<span class="input-group-text">Практика</span>
+			</div>
+			<select id='deanery-practice' class="form-control">
+				<option value="-1">Все</option>
+				{% for practice in practices %}
+					<option value="{{ practice.id }}">{{ practice }}</option>
+				{% endfor %}
+			</select>
+		</div>
 	</div>
 	{% include "main/html/blocks/deanery/document_list.html" %}
 	

@@ -254,21 +254,28 @@ def delete_group(request, group_id):
 
 @permission_required('main.deanery_worker_permissions')
 @login_required(login_url='/app/user/login/')
+def all_students(request):
+    relations = StudentToPractice.objects.filter(is_active=True)
+    practices = []
+    for relation in relations:
+        practices.append(relation.practice)
+    # I don't know what to do next, please help.
+    return render(request, "main/html/deanery/students.html", {"practices": practices, "page_title": "Список студентов, проходящих практику"})
+
+
+@permission_required('main.deanery_worker_permissions')
+@login_required(login_url='/app/user/login/')
 def get_students(request, practice_id):
-    try:
-        relations = StudentToPractice.objects.filter(practice__id=practice_id, is_active=True)
-    except:
-        return HttpResponse(json.dumps({"message": "Данной практики не существует"}), content_type="application/json")
+    relations = StudentToPractice.objects.filter(practice__id=practice_id, is_active=True)
     students = []
     for relation in relations:
-        student = relation.student
         students.append({
-            name: student.__str__(),
-            group: {
-                number: student.student_profile.group.group_number,
-                course: student.student_profile.group.course
-            }
-        })
+            "name": relation.student.__str__(),
+            "group": relation.student.student_profile.group.group_number,
+            "course": relation.student.student_profile.group.course
+        });
+    return HttpResponse(json.dumps(students), content_type="application/json")
+
 
 @login_required(login_url='/app/user/login/')
 def get_student_info(request, student_id):
@@ -410,13 +417,18 @@ def append_students_to_practice(request):
 @permission_required('main.deanery_worker_permissions')
 def change_document_status(request):
     json_data = json.loads(request.body)
-    try:
-        document = Document.objects.get(id=json_data.get("document_id"))
-    except:
-        return HttpResponse(json.dumps({"message": "Документ не найден"}), content_type="application/json")
-    document.status = json_data.get("status")
-    document.save()
-    return HttpResponse(json.dumps({"message": "Операция завершена"}), content_type="application/json")
+    documents = []
+    response = {}
+    for doc_id in json_data.get('document_ids'):
+        try: 
+            documents.append(Document.objects.get(id=doc_id))
+        except:
+            response.message = 'Некоторые документы не найдены.'
+    status = json_data.get("status")
+    for document in documents:
+        document.status = status
+        document.save()
+    return HttpResponse(json.dumps(response), content_type="application/json")
 
 
 @login_required(login_url='/app/user/login/')
@@ -433,11 +445,12 @@ def main_redirect(request):
 
     if user.has_perm('main.deanery_worker_permissions'):
         practices = Practice.objects.filter(practice_documents__status=0)
+        practices = set(practices)
         for practice in practices:
             practice.documents = Document.objects.filter(practice=practice, status=0)
             for document in practice.documents:
                 document.student.group = StudyGroup.objects.get(group_student_profiles__user=document.student)
-        return render(request, 'main/html/deanery/documents.html', {"practices": practices, "page_title": "Новые документы"})
+        return render(request, 'main/html/deanery/documents.html', {"document_types": [x[0] for x in DOCUMENT_KEYS], "practices": practices, "page_title": "Новые документы"})
 
     return HttpResponseRedirect('/app/user/login/')
 

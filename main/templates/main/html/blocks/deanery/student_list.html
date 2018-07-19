@@ -1,14 +1,33 @@
-<div class="table-responsive-sm table-striped table-small">
-	<table id="student-list" class="table">
-		<thead class="thead-dark">
-			<tr>
-				<th>Выбрать</th>
-				<th>ФИО студента</th>
-				<th>Группа</th>
-				<th>Курс</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
-</div>
+{% for practice in practices %}
+	<div class="card mb-5">
+		<div class="card-header">
+			<input type="text" name="practice-id" disabled="true" readonly="true" value="{{ practice.id }}" style="display: none;">
+			{{ practice }}
+		</div>
+		<div class="card-body">
+			<div class="table-responsive-md table-striped table-small">
+				<table id="student-list" class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th>Выбрать</th>
+							<th>ФИО студента</th>
+							<th>Группа</th>
+							<th>Курс</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for student in practice.student_list %}
+							<td>
+								<input type="text" name="student-id" disabled="true" readonly="true" value="{{ student.id }}">
+								<input class="form-control" type="checkbox" name="choosen">
+							</td>
+							<td name='student-name'>{{ student }}</td>
+							<td name='student-group'>{{ student.student_profile.group }}</td>
+							<td name='student-course'>{{ student.student_profile.group.course }}</td>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endfor %}

@@ -4,7 +4,37 @@ const MESSAGES = {
 	SUCCESS: 'success'
 };
 
-function get_cookie(name) {
+function createElement(elementName) {
+	return $('<'+elementName+'></'+elementName+'>');
+};
+
+function createAlert(text, type) {
+	var div = createElement('div');
+	var a = createElement('a');
+	div.addClass('alert alert-'+type);
+	div.css('display', 'none');
+	div.text(text);
+	return div;
+};
+
+function displayMessage(message, type) {
+	var $messages = $('.messages');
+	$messages.append(createAlert(message, type));
+	$messages.slideDown(200);
+	if ($messages.children().length > 0) {
+		$messages.children().last().slideDown(500);
+		setTimeout(function() {
+			$messages.children().first().slideUp(500);
+			setTimeout(function() {
+				$messages.children().first().remove();
+			}, 500);
+		}, 5000);
+	} else {
+		$messages.slideUp(200);
+	}
+};
+
+function getCookie(name) {
 	var cookieValue = null;
 	if (document.cookie && document.cookie !== '') {
 		var cookies = document.cookie.split(';');
@@ -20,62 +50,52 @@ function get_cookie(name) {
 };
 
 $($.ajaxSetup({
-	headers: {'X-CSRFToken': get_cookie('csrftoken')}, 
+	headers: {'X-CSRFToken': getCookie('csrftoken')}, 
 	dataType: 'json', 
 	contetType: 'application/json',
 	error: function(xhr, status, thrown) {
-		display_message(thrown, MESSAGES.DANGER);
+		displayMessage(thrown, MESSAGES.DANGER);
 	}
 }));
 
-function get_calendar_config(multi) {
+function getCalendarConfig(isSingle=true) {
 	return {
 		autoUpdateInput: false,
-		singleDatePicker: !multi,
-		showDropdowns: !multi,
+		singleDatePicker: isSingle,
+		showDropdowns: isSingle,
 		locale: {
 			cancelLabel: 'Отменить',
 			applyLabel: 'Применить'
 		}
-	}
+	};
 };
 
-function display_message(message, type) {
-	var $messages = $('.messages');
-	$messages.append(
-		$('<div></div>')
-		.addClass('alert alert-'+type)
-		.append(
-			$('<a></a>')
-			.addClass('close')
-			.attr('data-dismiss', 'alert')
-		).text(message)
-	)
-	if ($messages.children().length > 0) {
-		$messages.slideDown(300);
-		setTimeout(function() {
-			$messages.slideUp(300);
-			$messages.children().remove();
-		}, 5000);
+function onDatePickerApply(evt, picker) {
+	var value = picker.startDate.format('DD.MM.YYYY');
+	if (!picker.singleDatePicker) {
+		value = 
+			picker.startDate.format('DD.MM.YYYY')
+			+' - '+
+			picker.endDate.format('DD.MM.YYYY');
 	}
+	$(this).val(value);
 };
 
-function add_datepicker(element, date_range) {
-	element.daterangepicker(
-		get_calendar_config(date_range)
-	).on('apply.daterangepicker', function(ev, picker) {
-		if (date_range) {
-			$(this).val(
-				picker.startDate.format('DD.MM.YYYY') 
-				+ ' - ' + 
-				picker.endDate.format('DD.MM.YYYY')
-			);
-		} else {
-			$(this).val(
-				picker.startDate.format('DD.MM.YYYY')
-			);
-		}
-	}).on('cancel.daterangepicker', function(ev, picker) {
-		$(this).val('');
-	});
+function onDatePickerCancel(evt, picker) {
+	$(this).val('');
+};
+
+function addDatePicker(element, isSingle) {
+	var config = getCalendarConfig(isSingle);
+	element.daterangepicker(config);
+	element.on('apply.daterangepicker', onDatePickerApply);
+	element.on('cancel.daterangepicker', onDatePickerCancel);
+};
+
+function highlightElement(element) {
+	element.css('border-color', 'red');
+};
+
+function unHighlightElement(element) {
+	element.css('border-color', '');
 };

@@ -1,176 +1,215 @@
-function add_delete_button(column) {
-	column.append(
-		$('<a>x</a>')
-		.addClass('close')
-		.on('click', function(evt) {
-			$(evt.target).closest('tr').remove();
-		})
-	);
-}
-
-function create_new_textarea_column() {
-	var $column = $('<td></td>');
-	$column.append(
-		$('<textarea></textarea>')
-		.addClass('form-control')
-	);
-	return $column;
+function deleteTableRow(evt) {
+	$(evt.target).closest('tr').remove();
 };
 
-function create_new_date_column(date_range) {
-	var $column = $('<td></td>');
-	var $input = $('<input></input>').addClass('form-control');
-	add_datepicker($input, date_range);
-	$column.append($input);
-	return $column;
+function createPracticeDiaryTextareaColumn() {
+	var td = createElement('td');
+	var textarea = createElement('textarea');
+	textarea.addClass('md-textarea form-control');
+	td.append(textarea);
+	return td;
 };
 
-function create_new_delete_column() {
-	var $column = $('<td></td>');
-	add_delete_button($column);
-	return $column;
+function createPracticeDiaryDateInputColumn() {
+	var td = createElement('td');
+	var input = createElement('input');
+	input.addClass('md-textarea form-control');
+	addDatePicker(input, true);
+	td.append(input);
+	return td;
 };
 
-function create_new_row(date_range) {
-	var $row = $('<tr></tr>');
-	$row.append(create_new_textarea_column());
-	$row.append(create_new_date_column(date_range));
-	$row.append(create_new_delete_column());
-	return $row;
+function createPracticeDiaryActionColumn() {
+	var td = createElement('td');
+	td.addClass('text-center');
+	var a = createElement('a');
+	a.on('click', deleteTableRow);
+	a.text('Удалить');
+	td.append(a);
+	return td;
 };
 
-function get_table_info() {
-	var $table = $('#work-description-container');
-	if ($table.length == 0) return false;
-	return {
-		date_range: $table.attr('multi-date') == 'true',
-		body: $table.find('tbody'),
-		rows: $table.find('tbody').find('tr')
-	}
+function createPracticeDiaryRow() {
+	var row = createElement('tr');
+	row.append(createPracticeDiaryTextareaColumn());
+	row.append(createPracticeDiaryDateInputColumn());
+	row.append(createPracticeDiaryActionColumn());
+	return row;
 };
 
-function get_row_info(row) {
-	var $row = $(row);
-	return {
-		textarea: $row.find('textarea'),
-		input: $row.find('input')
-	}
+function createIndividualTaskDateInputColumn() {
+	var td = createElement('td');
+	var input = createElement('input');
+	input.addClass('form-control');
+	addDatePicker(input, false);
+	td.append(input);
+	return td;
 };
 
-function get_curator_info() {
-	var $curator_info = $('#curator-info');
-	if ($curator_info.length == 0) return false;
-	return {
-		fullname: $curator_info.find('input[name="curator-name"]'),
-		position: $curator_info.find('input[name="curator-position"]')
-	};
+function createIndividualTaskRow() {
+	var row = createElement('tr');
+	row.append(createPracticeDiaryTextareaColumn());
+	row.append(createIndividualTaskDateInputColumn());
+	row.append(createPracticeDiaryActionColumn());
+	return row;
 };
 
-function _info_is_valid(row_info) {
-	var valid = true;
-	Object.keys(row_info).forEach(function(key) {
-		if (row_info[key].val().length == 0) {
-			valid = false;
-			row_info[key].css('border-color', 'red');
+function tableHasDateRange(table) {
+	return table.attr('date-range') == 'true';
+};
+
+function tableHasNoChildren(table) {
+	return table.find('tbody').children().length == 0;
+};
+
+function tableHasNoEmptyFields(table) {
+	var notEmpty = true;
+	var tbody = table.find('tbody');
+	tbody.children().each(function() {
+		var textarea = $(this).find('textarea');
+		var input = $(this).find('input');
+		if (textarea.val().trim().length == 0) {
+			notEmpty = false;
+			highlightElement(textarea);
 		} else {
-			row_info[key].css('border-color', '');
+			unHighlightElement(textarea);
+		}
+		if (input.val().trim().length == 0) {
+			notEmpty = false;
+			highlightElement(input);
+		} else {
+			unHighlightElement(input);
+		}
+	});
+	return notEmpty;
+};
+
+function tableIsValid(table) {
+	var valid = true;
+	var tbody = table.find('tbody');
+	tbody.children().each(function() {
+		var input = $(this).find('input');
+		if (!input.val().match(/\d{2}.\d{2}.\d{4}/)) {
+			valid = false;
+			highlightElement(input);
+		} else {
+			unHighlightElement(input);
 		}
 	});
 	return valid;
 };
 
-function table_info_is_valid(table_info) {
-	var valid = table_info.rows.length != 0;
-	console.log(table_info.rows.length);
-	for (var i = 0; i < table_info.rows.length; i ++) {
-		if (!_info_is_valid(get_row_info(table_info.rows[i]))) valid = false;
-	}
-	return valid;
-};
-
-function add_new_row() {
-	var table_info = get_table_info();
-	if (table_info.rows.length == 0 || table_info_is_valid(table_info)) {
-		table_info.body.append(
-			create_new_row(table_info.date_range)
-		);
+function addRowToTable() {
+	var table = $('#student-practice-table');
+	var tbody = table.find('tbody');
+	if (tableHasNoChildren(table) || (tableHasNoEmptyFields(table) && tableIsValid(table))) {
+		var row = null;
+		if (tableHasDateRange(table)) {
+			row = createIndividualTaskRow();
+		} else {
+			row = createPracticeDiaryRow();
+		}
+		tbody.append(row);
 	} else {
-		display_message('Пожалуйста, заполните все поля.', MESSAGES.WARNING);
+		displayMessage('Пожалуйста, заполните все поля.', MESSAGES.WARNING);
 	}
 };
 
-function send_document_to_server(json) {
+function curatorInfoHasNoEmptyFields(curatorInfo) {
+	var notEmpty = true;
+	curatorInfo.find('input').each(function() {
+		if ($(this).val().trim().length == 0) {
+			notEmpty = false;
+			highlightElement($(this));
+		} else {
+			unHighlightElement($(this));
+		}
+	});
+	return notEmpty;
+};
+
+function getCuratorInfo() {
+	var curatorInfo = $('#student-practice-curator-info');
+	if (curatorInfo.length == 0) return false;
+	var info = {
+		firstName: curatorInfo.find('input[name="student-practice-curator-first-name"]').val().trim(),
+		secondName: curatorInfo.find('input[name="student-practice-curator-second-name"]').val().trim(),
+		middleName: curatorInfo.find('input[name="student-practice-curator-middle-name"]').val().trim(),
+		position: curatorInfo.find('input[name="student-practice-curator-position"]').val().trim()
+	};
+	return info;
+};
+
+function sendData(json) {
 	$.post({
 		url: document.location,
 		data: JSON.stringify(json),
 		success: function(result, status, xhr) {
 			if (result.message) {
-				display_message(result.message, MESSAGES.WARNING);
+				displayMessage(result.message, MESSAGES.WARNING);
 			} else {
-				display_message('Документ сохранён.', MESSAGES.SUCCESS);
+				displayMessage('Документ сохранён.', MESSAGES.SUCCESS);
 			}
 		}
 	});
 };
 
-function save_doc() {
-	var table_info = get_table_info();
-	var curator_info = get_curator_info();
-	var json = {works: [], curator_fio: '', curator_office: ''}; 
-	var curator_valid = false;
-	if (curator_info) {
-		curator_valid = _info_is_valid(curator_info);
-	} else {
-		curator_valid = true;
+function saveDocument() {
+	var table = $('#student-practice-table');
+	var tbody = table.find('tbody');
+	var json = {works: [], curator_fio: '', curator_office: ''};
+	var curatorInfo = getCuratorInfo();
+	var curatorInfoValid = true;
+	if (curatorInfo) {
+		curatorInfoValid = curatorInfoHasNoEmptyFields($('#student-practice-curator-info'));
+		json.curator_fio = [curatorInfo.secondName, curatorInfo.firstName, curatorInfo.middleName].join(' ');
+		json.curator_office = curatorInfo.position;
 	}
-	json.curator_fio = '';
-	json.curator_office = '';
-	if (curator_info) {
-		json.curator_fio = curator_info.fullname.val().trim();
-		json.curator_office = curator_info.position.val().trim();
-	}
-	console.log(table_info);
-	if (table_info) {
-		if (table_info.rows.length == 0) {
-			display_message('Вы не заполнили ни одного поля.', MESSAGES.WARNING);
+	if (table.length != 0) {
+		if (tableHasNoChildren(table)) {
+			displayMessage('Вы не заполнили ни одного поля.', MESSAGES.WARNING);
 			return;
 		}
-		if (table_info_is_valid(table_info) & curator_valid) {
-			for (var i = 0; i < table_info.rows.length; i ++) {
-				var row_info = get_row_info(table_info.rows[i]);
+		if (tableHasNoEmptyFields(table) && tableIsValid(table) && curatorInfoValid) {
+			var k = 1;
+			tbody.children().each(function() {
+				var textarea = $(this).find('textarea');
+				var input = $(this).find('input');
 				json.works.push({
-					num: i + 1,
-					work: row_info.textarea.val().trim()
+					num: k,
+					work: textarea.val().trim()
 				});
-				if (table_info.date_range) {
-					var dates = row_info.input.val().split(' - ');
-					json.works[i].start_date = dates[0];
-					json.works[i].end_date = dates[1];
+				var dates = input.val().split(' - ');
+				if (dates.length == 2) {
+					json.works[k-1].start_date = dates[0];
+					json.works[k-1].end_date = dates[1];
 				} else {
-					json.works[i].date = row_info.input.val();
+					json.works[k-1].date = dates[0];
 				}
-			}
-			send_document_to_server(json);
+				k ++;
+			});
+			sendData(json);
 		} else {
-			display_message('Пожалуйста, заполните все поля.', MESSAGES.WARNING);
+			displayMessage('Пожалуйста, заполните все поля.', MESSAGES.WARNING);
 		}
 	} else {
-		send_document_to_server(json);
+		sendData(json);
 	}
 };
 
-function update_table_functions() {
-	var table_info = get_table_info();
-	if (table_info)
-	for (var i = 0; i < table_info.rows.length; i ++) {
-		var children = $(table_info.rows[i]).children();
-		add_datepicker($(children[1]).children('input'), table_info.date_range);
-		add_delete_button($(children[2]));
+function updateTable() {
+	var table = $('#student-practice-table');
+	if (table.length != 0) {
+		var tbody = table.find('tbody');
+		tbody.children().each(function() {
+			addDatePicker($(this).find('input'), !tableHasDateRange(table));
+			$(this).append(createPracticeDiaryActionColumn());
+		});
 	}
 };
 
 $(function() {
-	$('#add-new-row-btn').on('click', add_new_row);
-	$('#save-doc-btn').on('click', save_doc);
-	update_table_functions();
+	$('#add-new-row-btn').on('click', addRowToTable);
+	$('#save-doc-btn').on('click', saveDocument);
+	updateTable();
 });

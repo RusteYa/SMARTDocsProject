@@ -1,30 +1,43 @@
 {% load utils %}
 {% for practice in practices %}
-<div class="table-responsive-sm table-striped table-small">
-	<table id="document-list" class="table">
-		<thead class="thead-dark">
-			<tr>
-				<th>Выбрать</th>
-				<th>Тип документа</th>
-				<th>ФИО студента</th>
-				<th>Группа</th>
-				<th>Курс</th>
-				<th>Действие</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for document in practice.documents %}
-				<tr>
-					<input type="text" name="document_id" disabled="true" readonly="true" value="{{ document.id }}" style="display: none">
-					<td><input type="checkbox" name="choosen"></td>
-					<td name="document_type">{{ document.template.document_name|doc_type_str }}</td>
-					<td name="student_name">{{ document.student }}</td>
-					<td name="student_group">{{ document.student.group }}</td>
-					<td name="student_course">{{ document.student.group.course }}</td>
-					<td><a href="/media/{{ document.upload }}">Скачать</a></td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+<div class="card mb-5">
+	<div class="card-header">
+		<input type="text" name="practice-id" disabled="true" readonly="true" value="{{ practice.id }}" style="display: none;">
+		{{ practice }}
+	</div>
+	<div class="card-body">
+		<div class="table-responsive-md table-striped table-small">
+			<table name="document-list" class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th>Выбрать</th>
+						<th>Тип документа</th>
+						<th>ФИО студента</th>
+						<th>Группа</th>
+						<th>Курс</th>
+						<th>Действие</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for document in practice.documents %}
+						<tr>
+							<td>
+								<input type="text" name="document-id" disabled="true" readonly="true" value="{{ document.id }}" style="display: none;">
+								<input class="form-control" type="checkbox" name="choosen">
+							</td>
+							<td>
+								<input type="text" name="document-type" disabled="true" readonly="true" value="{{ document.template.document_name }}" style="display: none;">
+								{{ document.template.document_name|doc_type_str }}
+							</td>
+							<td name="student-name">{{ document.student }}</td>
+							<td name="student-group">{{ document.student.group }}</td>
+							<td name="student-course">{{ document.student.group.course }}</td>
+							<td><a href="/media/{{ document.upload }}">Скачать</a></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 {% endfor %}

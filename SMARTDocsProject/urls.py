@@ -16,11 +16,13 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.http import HttpResponseRedirect
 from . import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-	path('app/', include('main.urls'))
+	path('app/', include('main.urls')),
+	path('/', HttpResponseRedirect('/app/user/login'))
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
